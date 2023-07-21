@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Task } from "../model";
+import { MdModeEdit, MdDelete, MdCheckCircleOutline } from "react-icons/md";
 
 interface Props {
   task: Task;
@@ -40,27 +41,45 @@ const TaskListItem = ({ task, setTasks }: Props) => {
   };
 
   return (
-    <li>
+    <li className="grid grid-cols-6 px-4 py-6  border-b border-gray-700 last:border-none hover:bg-slate-900 transition-colors">
       {isEdit ? (
-        <form onSubmit={(e) => handleEditTask(e, task.id)}>
+        <form
+          onSubmit={(e) => handleEditTask(e, task.id)}
+          className="col-span-4"
+        >
           <input
             ref={editRef}
             type="text"
             value={editedTask}
             onChange={(e) => setEditedTask(e.target.value)}
+            className="text-white bg-transparent p-3 border border-gray-400"
           />
         </form>
       ) : (
-        <h3>{task.task}</h3>
+        <div className="col-span-4 flex items-center">
+          <button onClick={() => markCompleted(task.id)}>
+            <MdCheckCircleOutline
+              className={`text-2xl font-bold ${
+                task.isComplete && "text-green-500"
+              }`}
+            />
+          </button>
+          <h3
+            className={`ml-4 text-lg ${
+              task.isComplete && "line-through text-gray-400"
+            }`}
+          >
+            {task.task}
+          </h3>
+        </div>
       )}
-      <div>
-        {isEdit ? (
-          <button onClick={(e) => handleEditTask(e, task.id)}>Save</button>
-        ) : (
-          <button onClick={() => setIsEdit(true)}>Edit</button>
-        )}
-        <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
-        <button onClick={() => markCompleted(task.id)}>Completed</button>
+      <div className="col-span-2 place-self-end flex items-center">
+        <button onClick={() => setIsEdit(true)} className="mr-4">
+          <MdModeEdit className="text-2xl font-bold" />
+        </button>
+        <button onClick={() => handleDeleteTask(task.id)}>
+          <MdDelete className="text-2xl font-bold" />
+        </button>
       </div>
     </li>
   );
