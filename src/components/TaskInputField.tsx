@@ -8,19 +8,19 @@ interface Props {
 
 const TaskInputField = ({ task, setTask, handleAddTask }: Props) => {
   return (
-    <form onSubmit={handleAddTask} className="grid grid-cols-4 w-1/2">
+    <form onSubmit={handleAddTask} className="relative w-3/4">
       <input
         type="text"
         placeholder="Add Task"
         value={task}
         onChange={(e) => setTask(e.target.value)}
-        className="col-span-3 text-white bg-transparent p-3 border border-gray-400"
+        className="w-full text-white bg-transparent p-3 outline-none border-2 border-gray-400 focus:border-gray-50 rounded-md"
       />
       <button
         onClick={handleAddTask}
-        className="flex justify-center bg-gray-600 border border-gray-500"
+        className="absolute right-1 top-1/2 -translate-y-1/2"
       >
-        <IoAddCircleOutline className="text-purple-300 text-5xl" />
+        <IoAddCircleOutline className="text-gray-300 text-4xl hover:text-gray-50" />
       </button>
     </form>
   );

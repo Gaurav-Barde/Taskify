@@ -9,11 +9,13 @@ interface Props {
 
 const TaskList = memo(({ tasks, setTasks }: Props) => {
   return (
-    <ul>
-      {tasks.map((task) => (
-        <TaskListItem key={task.id} task={task} setTasks={setTasks} />
-      ))}
-    </ul>
+    tasks.length && (
+      <ul className="w-3/4 text-white my-8 bg-slate-800 border border-slate-600 rounded-md">
+        {tasks.map((task) => (
+          <TaskListItem key={task.id} task={task} setTasks={setTasks} />
+        ))}
+      </ul>
+    )
   );
 });
 
