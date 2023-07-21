@@ -21,6 +21,9 @@ export default {
     extend: {
       colors: {
         customDark: "#101015",
+        "gradient1-button": "#BB3FDD",
+        "gradient2-button": "#FB6DA9",
+        "gradient3-button": "#FF9F7C",
       },
     },
   },
