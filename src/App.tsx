@@ -16,14 +16,18 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col flex-1 h-full items-center py-8 px-4 bg-customDark">
-      <h1 className="text-white text-7xl mb-8">Taskify</h1>
-      <TaskInputField
-        task={task}
-        setTask={setTask}
-        handleAddTask={handleAddTask}
-      />
-      <TaskList tasks={tasks} setTasks={setTasks} />
+    <div className="w-full min-h-screen bg-customDark">
+      <div className="flex flex-col items-center w-1/2 mx-auto py-8 px-4">
+        <h1 className="text-center bg-gradient-to-r from-gradient1-button via-gradient2-button to-gradient3-button bg-clip-text text-transparent text-7xl mb-8 h-20">
+          Taskify
+        </h1>
+        <TaskInputField
+          task={task}
+          setTask={setTask}
+          handleAddTask={handleAddTask}
+        />
+        <TaskList tasks={tasks} setTasks={setTasks} />
+      </div>
     </div>
   );
 };
