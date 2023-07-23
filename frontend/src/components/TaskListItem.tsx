@@ -22,19 +22,34 @@ const TaskListItem = ({ task, setTasks }: Props) => {
     editRef.current?.focus();
   }, [isEdit]);
 
-  const handleDeleteTask = (id: number) => {
-    setTasks((prevTasks: Task[]) =>
-      prevTasks.filter((item: Task) => item.id !== id)
-    );
+  const handleDeleteTask = async (id: number) => {
+    await fetch("http://localhost:8080/tasks/" + id, {
+      method: "DELETE",
+    });
+    // setTasks((prevTasks: Task[]) =>
+    //   prevTasks.filter((item: Task) => item.id !== id)
+    // );
   };
 
-  const handleEditTask = (e: React.FormEvent, id: number) => {
+  const handleEditTask = async (e: React.FormEvent, id: number) => {
     e.preventDefault();
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === id ? { ...task, task: editedTask } : task
-      )
-    );
+    try {
+      const data = await fetch("http://localhost:8080/update/" + id, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ task: editedTask }),
+      });
+      const json = await data.json();
+      console.log("###", json);
+    } catch (error) {
+      console.log("&&&", error);
+    }
+
+    // setTasks((prevTasks) =>
+    //   prevTasks.map((task) =>
+    //     task.id === id ? { ...task, task: editedTask } : task
+    //   )
+    // );
     setIsEdit(false);
   };
 
