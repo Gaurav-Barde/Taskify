@@ -30,13 +30,22 @@ app.post("/create", (req, res) => {
   });
 });
 
-app.put("/update/:id", (req, res) => {
-  console.log("Update Request: ", req);
-  const sql = "UPDATE tasks set `task` = ? WHERE ID = ? ";
-  const values = [req.body.task];
+app.put("/updatetask/:id", (req, res) => {
   const id = req.params.id;
+  const sql = "UPDATE tasks SET `task` = ? WHERE ID = ? ";
+  const values = [req.body.task];
   db.query(sql, [...values, id], (err, data) => {
-    if (err) return res.json("Error", err);
+    if (err) return res.json("Error", err.message);
+    return res.json(data);
+  });
+});
+
+app.put("/updatestatus/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "UPDATE tasks SET `isComplete` = ? WHERE ID = ? ";
+  const values = [req.body.isComplete];
+  db.query(sql, [...values, id], (err, data) => {
+    if (err) return res.json("Error", err.message);
     return res.json(data);
   });
 });
