@@ -1,7 +1,7 @@
 interface Props {
   handleEditTask: (e: React.FormEvent<HTMLFormElement>, id: number) => void;
   id: number;
-  ref: React.RefObject<HTMLInputElement>;
+  forwardedRef: React.Ref<HTMLInputElement>;
   editedTask: string;
   setEditedTask: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -9,14 +9,14 @@ interface Props {
 const EditTaskInputField = ({
   handleEditTask,
   id,
-  ref,
+  forwardedRef,
   editedTask,
   setEditedTask,
 }: Props) => {
   return (
     <form onSubmit={(e) => handleEditTask(e, id)} className="col-span-4">
       <input
-        ref={ref}
+        ref={forwardedRef}
         type="text"
         value={editedTask}
         onChange={(e) => setEditedTask(e.target.value)}
