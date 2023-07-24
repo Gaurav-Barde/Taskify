@@ -38,7 +38,6 @@ const App: React.FC = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            id: Date.now(),
             task: task,
             isComplete: false,
           }),
@@ -50,6 +49,20 @@ const App: React.FC = () => {
         setTask("");
         setLoading(false);
       }
+    }
+  };
+
+  const handleDeleteTask = async (id: number) => {
+    setLoading(true);
+    try {
+      await fetch(BASE_URL + "tasks/" + id, {
+        method: "DELETE",
+      });
+      getTasks();
+    } catch (e: any) {
+      console.log(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -68,7 +81,12 @@ const App: React.FC = () => {
               setTask={setTask}
               handleAddTask={handleAddTask}
             />
-            <TaskList tasks={tasks} setTasks={setTasks} />)
+            <TaskList
+              tasks={tasks}
+              setTasks={setTasks}
+              handleDeleteTask={handleDeleteTask}
+              getTasks={getTasks}
+            />
           </>
         </div>
       )}
