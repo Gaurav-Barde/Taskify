@@ -1,16 +1,17 @@
 const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
+require("dotenv").config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
 const db = mysql.createConnection({
-  host: "sql6.freemysqlhosting.net",
-  user: "sql6634443",
-  password: "mgMUcGYdBL",
-  database: "sql6634443",
+  host: process.env.MYSQL_HOST,
+  user: process.env.MYSQL_USERNAME,
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE,
 });
 
 app.get("/", (req, res) => {
@@ -60,6 +61,6 @@ app.delete("/tasks/:id", (req, res) => {
   });
 });
 
-app.listen(8080, () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log("Listening to Port 8080");
 });
