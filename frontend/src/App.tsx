@@ -83,7 +83,6 @@ const App: React.FC = () => {
             />
             <TaskList
               tasks={tasks}
-              setTasks={setTasks}
               handleDeleteTask={handleDeleteTask}
               getTasks={getTasks}
             />
