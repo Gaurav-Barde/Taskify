@@ -14,7 +14,7 @@ const db = mysql.createConnection({
   database: process.env.MYSQL_DATABASE,
 });
 
-app.get("/", (req, res) => {
+app.get("/gettasks", (req, res) => {
   const sql = "SELECT * from tasks";
   db.query(sql, (err, data) => {
     if (err) return res.json("Error:", err.message);
