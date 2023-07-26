@@ -14,10 +14,15 @@ const db = mysql.createConnection({
   database: process.env.MYSQL_DATABASE,
 });
 
+app.get("/favicon.ico", function (req, res) {
+  res.status(204);
+  res.end();
+});
+
 app.get("/", (req, res) => {
   const sql = "SELECT * from tasks";
   db.query(sql, (err, data) => {
-    if (err) return res.json("Error:", err);
+    if (err) return res.json("Error:", err.message);
     return res.json(data);
   });
 });
@@ -64,3 +69,5 @@ app.delete("/tasks/:id", (req, res) => {
 app.listen(process.env.PORT || 8080, () => {
   console.log("Listening to Port 8080");
 });
+
+module.exports = app;
