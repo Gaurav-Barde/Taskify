@@ -22,8 +22,8 @@ app.get("/favicon.ico", function (req, res) {
 app.get("/", (req, res) => {
   const sql = "SELECT * from tasks";
   db.query(sql, (err, data) => {
-    if (err) return res.json("Error:", err.message);
-    return res.json(data);
+    if (err) return res.status(500).json("Error:", err.message);
+    return res.status(200).json(data);
   });
 });
 
