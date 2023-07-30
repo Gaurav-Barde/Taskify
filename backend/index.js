@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const mysql = require("mysql");
 require("dotenv").config();
+const axios = require("axios");
 
 const app = express();
 app.use(express.json());
@@ -19,12 +20,15 @@ app.get("/favicon.ico", function (req, res) {
   res.end();
 });
 
-app.get("/", (req, res) => {
-  const sql = "SELECT * from tasks";
-  db.query(sql, (err, data) => {
-    if (err) return res.status(500).json("Error:", err.message);
-    return res.status(200).json(data);
-  });
+app.get("/", async (req, res) => {
+  // const sql = "SELECT * from tasks";
+  // db.query(sql, (err, data) => {
+  //   if (err) return res.status(500).json("Error:", err.message);
+  //   return res.status(200).json(data);
+  // });
+  const data = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
+  console.log(data.data);
+  return res.status(200).json(data.data);
 });
 
 app.post("/create", (req, res) => {
