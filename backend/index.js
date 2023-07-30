@@ -70,7 +70,7 @@ app.delete("/tasks/:id", (req, res) => {
 });
 
 app.listen(process.env.PORT || 8080, async () => {
-  console.log("Listening to Port " + process.env.PORT);
+  console.log("Listening to port " + process.env.PORT);
   await db.connect();
 });
 
