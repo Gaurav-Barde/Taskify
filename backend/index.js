@@ -14,6 +14,9 @@ const db = mysql.createConnection({
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
 });
+db.connect((err) => {
+  console.log("failed to connect to mysql", err);
+});
 
 app.get("/favicon.ico", function (req, res) {
   res.status(204);
