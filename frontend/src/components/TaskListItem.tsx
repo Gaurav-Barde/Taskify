@@ -13,10 +13,10 @@ interface Props {
   tasks: Task[];
   task: Task;
   handleDeleteTask: (id: number) => Promise<void>;
-  getTasks: () => void;
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-const TaskListItem = ({ tasks, task, handleDeleteTask, getTasks }: Props) => {
+const TaskListItem = ({ tasks, task, handleDeleteTask, setTasks }: Props) => {
   const [editedTask, setEditedTask] = useState<string>(task.task);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const editRef = useRef<HTMLInputElement>(null);
@@ -28,12 +28,20 @@ const TaskListItem = ({ tasks, task, handleDeleteTask, getTasks }: Props) => {
   const handleEditTask = async (e: React.FormEvent, id: number) => {
     e.preventDefault();
     try {
-      await fetch(BASE_URL + "updatetask/" + id, {
+      const data = await fetch(BASE_URL + "updatetask/" + id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ task: editedTask }),
       });
-      getTasks();
+      const json = await data.json();
+      setTasks(
+        tasks.map((task) => {
+          if (task.id === json.id) {
+            return json;
+          }
+          return task;
+        })
+      );
     } catch (error: any) {
       console.log("Error while updating: ", error.message);
     }
@@ -43,12 +51,20 @@ const TaskListItem = ({ tasks, task, handleDeleteTask, getTasks }: Props) => {
   const handleMarkCompleted = async (id: number) => {
     const task = tasks.find((task) => task.id === id);
     try {
-      await fetch(BASE_URL + "updatestatus/" + id, {
+      const data = await fetch(BASE_URL + "updatestatus/" + id, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ isComplete: !task?.isComplete }),
+        body: JSON.stringify({ is_complete: !task?.is_complete }),
       });
-      getTasks();
+      const json = await data.json();
+      setTasks(
+        tasks.map((task) => {
+          if (task.id === json.id) {
+            return json;
+          }
+          return task;
+        })
+      );
     } catch (error: any) {
       console.log(error.message);
     }
@@ -69,13 +85,13 @@ const TaskListItem = ({ tasks, task, handleDeleteTask, getTasks }: Props) => {
           <button onClick={() => handleMarkCompleted(task.id)}>
             <MdCheckCircleOutline
               className={`text-2xl font-bold ${
-                task.isComplete && "text-green-500"
+                task.is_complete && "text-green-500"
               }`}
             />
           </button>
           <h3
             className={`ml-4 text-lg ${
-              task.isComplete && "line-through text-gray-400"
+              task.is_complete && "line-through text-gray-400"
             }`}
           >
             {task.task}
@@ -94,7 +110,7 @@ const TaskListItem = ({ tasks, task, handleDeleteTask, getTasks }: Props) => {
         ) : (
           <button
             onClick={() => {
-              !task.isComplete && setIsEdit(true);
+              !task.is_complete && setIsEdit(true);
             }}
             className="mr-4"
           >

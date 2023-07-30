@@ -32,17 +32,18 @@ const App: React.FC = () => {
     if (task) {
       setLoading(true);
       try {
-        await fetch(BASE_URL + "create", {
+        const data = await fetch(BASE_URL + "create", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
             task: task,
-            isComplete: false,
+            is_complete: false,
           }),
         });
-        getTasks();
+        const json = await data.json();
+        setTasks([...tasks, ...json]);
       } catch (error: unknown) {
         console.log(error);
       } finally {
@@ -55,10 +56,11 @@ const App: React.FC = () => {
   const handleDeleteTask = async (id: number) => {
     setLoading(true);
     try {
-      await fetch(BASE_URL + "tasks/" + id, {
+      const data = await fetch(BASE_URL + "tasks/" + id, {
         method: "DELETE",
       });
-      getTasks();
+      const json = await data.json();
+      setTasks(tasks.filter((task) => task.id !== json.id));
     } catch (e: any) {
       console.log(e.message);
     } finally {
@@ -84,7 +86,7 @@ const App: React.FC = () => {
             <TaskList
               tasks={tasks}
               handleDeleteTask={handleDeleteTask}
-              getTasks={getTasks}
+              setTasks={setTasks}
             />
           </>
         </div>
