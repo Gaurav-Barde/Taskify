@@ -24,20 +24,11 @@ app.get("/favicon.ico", function (req, res) {
 });
 
 app.get("/", async (req, res) => {
-  // const sql = "SELECT * from tasks";
-  // db.query(sql, (err, data) => {
-  //   if (err) return res.status(500).json("Error:", err.message);
-  //   return res.status(200).json(data);
-  // });
-  console.log(
-    process.env.MYSQL_HOST,
-    process.env.MYSQL_USERNAME,
-    process.env.MYSQL_PASSWORD,
-    process.env.MYSQL_DATABASE
-  );
-  const data = await axios.get("https://jsonplaceholder.typicode.com/todos/1");
-  console.log(data.data);
-  return res.status(200).json(data.data);
+  const sql = "SELECT * from tasks";
+  db.query(sql, (err, data) => {
+    if (err) return res.status(500).json("Error:", err.message);
+    return res.status(200).json(data);
+  });
 });
 
 app.post("/create", (req, res) => {
