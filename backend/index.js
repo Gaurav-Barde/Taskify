@@ -19,7 +19,7 @@ app.get("/favicon.ico", function (req, res) {
   res.end();
 });
 
-app.get("/", async (req, res) => {
+app.get("/api/tasks/", async (req, res) => {
   // return res.status(200).json({"hello": "world"});
   console.log("about to execute query");
   const pgsql = "SELECT * from public.tasks";
@@ -29,7 +29,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.post("/create", async (req, res) => {
+app.post("/api/tasks/create", async (req, res) => {
   console.log("about to create task");
   const pgsql =
     "INSERT INTO public.tasks (task, is_complete) VALUES ($1, $2) RETURNING *";
@@ -40,7 +40,7 @@ app.post("/create", async (req, res) => {
   });
 });
 
-app.put("/updatetask/:id", async (req, res) => {
+app.put("/api/tasks/updatetask/:id", async (req, res) => {
   const id = req.params.id;
   const pgsql = "UPDATE public.tasks SET task = $1 WHERE ID = $2 RETURNING *";
   const values = [req.body.task];
@@ -50,7 +50,7 @@ app.put("/updatetask/:id", async (req, res) => {
   });
 });
 
-app.put("/updatestatus/:id", async (req, res) => {
+app.put("/api/tasks/updatestatus/:id", async (req, res) => {
   const id = req.params.id;
   const pgsql =
     "UPDATE public.tasks SET is_complete = $1 WHERE ID = $2 RETURNING *";
@@ -61,7 +61,7 @@ app.put("/updatestatus/:id", async (req, res) => {
   });
 });
 
-app.delete("/tasks/:id", async (req, res) => {
+app.delete("/api/tasks/tasks/:id", async (req, res) => {
   const pgsql = "DELETE FROM public.tasks WHERE ID = $1 RETURNING ID";
   const id = req.params.id;
 
