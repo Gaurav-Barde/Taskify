@@ -6,6 +6,8 @@ require("dotenv").config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+const router = express.Router();
+app.use("/api/tasks", router);
 
 const db = new pg.Pool({
   host: process.env.PG_HOST,
@@ -19,20 +21,15 @@ app.get("/favicon.ico", function (req, res) {
   res.end();
 });
 
-const router = express.Router()
-
 router.get("/", async (req, res) => {
-  // return res.status(200).json({"hello": "world"});
-  console.log("about to execute query");
   const pgsql = "SELECT * from public.tasks";
   db.query(pgsql, (err, data) => {
-    if (err) return res.status(500).json({"error": err.message});
+    if (err) return res.status(500).json({ error: err.message });
     return res.status(200).json(data.rows);
   });
 });
 
 router.post("/create", async (req, res) => {
-  console.log("about to create task");
   const pgsql =
     "INSERT INTO public.tasks (task, is_complete) VALUES ($1, $2) RETURNING *";
   const values = [req.body.task, req.body.is_complete];
@@ -72,11 +69,9 @@ router.delete("/tasks/:id", async (req, res) => {
     return res.json(data.rows[0]);
   });
 });
-app.use("/api/tasks", router);
 
-app.listen(process.env.PORT || 8080, async () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log("Listening to port " + process.env.PORT);
-  // await db.connect();
 });
 
 module.exports = app;
