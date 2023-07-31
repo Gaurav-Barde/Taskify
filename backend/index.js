@@ -29,7 +29,7 @@ app.get("/", async (req, res) => {
   });
 });
 
-app.post("/create", (req, res) => {
+app.post("/create", async (req, res) => {
   console.log("about to create task");
   const pgsql =
     "INSERT INTO public.tasks (task, is_complete) VALUES ($1, $2) RETURNING *";
@@ -40,7 +40,7 @@ app.post("/create", (req, res) => {
   });
 });
 
-app.put("/updatetask/:id", (req, res) => {
+app.put("/updatetask/:id", async (req, res) => {
   const id = req.params.id;
   const pgsql = "UPDATE public.tasks SET task = $1 WHERE ID = $2 RETURNING *";
   const values = [req.body.task];
@@ -50,7 +50,7 @@ app.put("/updatetask/:id", (req, res) => {
   });
 });
 
-app.put("/updatestatus/:id", (req, res) => {
+app.put("/updatestatus/:id", async (req, res) => {
   const id = req.params.id;
   const pgsql =
     "UPDATE public.tasks SET is_complete = $1 WHERE ID = $2 RETURNING *";
@@ -61,7 +61,7 @@ app.put("/updatestatus/:id", (req, res) => {
   });
 });
 
-app.delete("/tasks/:id", (req, res) => {
+app.delete("/tasks/:id", async (req, res) => {
   const pgsql = "DELETE FROM public.tasks WHERE ID = $1 RETURNING ID";
   const id = req.params.id;
 
