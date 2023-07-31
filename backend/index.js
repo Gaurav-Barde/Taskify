@@ -24,7 +24,7 @@ app.get("/", async (req, res) => {
   console.log("about to execute query");
   const pgsql = "SELECT * from public.tasks";
   db.query(pgsql, (err, data) => {
-    if (err) return res.status(500).json("Error:", err.message);
+    if (err) return res.status(500).json({"error": err.message});
     return res.status(200).json(data.rows);
   });
 });
