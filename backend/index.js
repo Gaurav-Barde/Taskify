@@ -30,6 +30,7 @@ app.get("/", async (req, res) => {
 });
 
 app.post("/create", (req, res) => {
+  console.log("about to create task");
   const pgsql =
     "INSERT INTO public.tasks (task, is_complete) VALUES ($1, $2) RETURNING *";
   const values = [req.body.task, req.body.is_complete];
