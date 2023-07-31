@@ -20,11 +20,12 @@ app.get("/favicon.ico", function (req, res) {
 });
 
 app.get("/", async (req, res) => {
-  const pgsql = "SELECT * from public.tasks";
-  db.query(pgsql, (err, data) => {
-    if (err) return res.status(500).json("Error:", err.message);
-    return res.status(200).json(data.rows);
-  });
+  return res.status(200).json({"hello": "world"});
+  // const pgsql = "SELECT * from public.tasks";
+  // db.query(pgsql, (err, data) => {
+  //   if (err) return res.status(500).json("Error:", err.message);
+  //   return res.status(200).json(data.rows);
+  // });
 });
 
 app.post("/create", (req, res) => {
@@ -70,7 +71,7 @@ app.delete("/tasks/:id", (req, res) => {
 
 app.listen(process.env.PORT || 8080, async () => {
   console.log("Listening to port " + process.env.PORT);
-  await db.connect();
+  // await db.connect();
 });
 
 module.exports = app;
