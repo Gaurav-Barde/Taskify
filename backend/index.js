@@ -7,7 +7,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-const db = new pg.Client({
+const db = new pg.Pool({
   host: process.env.PG_HOST,
   user: process.env.PG_USERNAME,
   password: process.env.PG_PASSWORD,
@@ -20,12 +20,13 @@ app.get("/favicon.ico", function (req, res) {
 });
 
 app.get("/", async (req, res) => {
-  return res.status(200).json({"hello": "world"});
-  // const pgsql = "SELECT * from public.tasks";
-  // db.query(pgsql, (err, data) => {
-  //   if (err) return res.status(500).json("Error:", err.message);
-  //   return res.status(200).json(data.rows);
-  // });
+  // return res.status(200).json({"hello": "world"});
+  console.log("about to execute query");
+  const pgsql = "SELECT * from public.tasks";
+  db.query(pgsql, (err, data) => {
+    if (err) return res.status(500).json("Error:", err.message);
+    return res.status(200).json(data.rows);
+  });
 });
 
 app.post("/create", (req, res) => {
